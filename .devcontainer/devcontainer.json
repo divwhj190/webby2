@@ -1,21 +1,16 @@
 {
-    "name": "GUI Desktop Environment",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-azuretools.vscode-docker"
-            ]
-        }
-    },
-    "forwardPorts": [6080],
-    "portsAttributes": {
-        "6080": {
-            "label": "Desktop GUI",
-            "onAutoForward": "openBrowser"
-        }
-    },
-    "postStartCommand": "/usr/local/bin/start-desktop.sh"
+  "name": "Ubuntu Desktop VNC",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "Desktop GUI",
+      "onAutoForward": "openPreview",
+      "visibility": "public"
+    }
+  },
+  // This executes automatically right after the container boots up
+  "postStartCommand": "vncserver -kill :1 2>/dev/null; rm -f /tmp/.X11-unix/X1; vncserver :1 -geometry 1280x800 -depth 24 -SecurityTypes None -xstartup /usr/bin/startxfce4 && DISPLAY=:1 chromium --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run & websockify --web /usr/share/novnc 6080 localhost:5901"
 }

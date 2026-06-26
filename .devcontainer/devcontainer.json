@@ -1,0 +1,21 @@
+{
+    "name": "GUI Desktop Environment",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "forwardPorts": [6080],
+    "portsAttributes": {
+        "6080": {
+            "label": "Desktop GUI",
+            "onAutoForward": "openBrowser"
+        }
+    },
+    "postStartCommand": "/usr/local/bin/start-desktop.sh"
+}
